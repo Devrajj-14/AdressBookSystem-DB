@@ -1,0 +1,12 @@
+Field,Type,Null,Key,Default,Extra
+ContactId,int,NO,PRI,NULL,auto_increment
+FirstName,varchar(50),NO,,NULL,
+LastName,varchar(50),NO,,NULL,
+Address,varchar(150),YES,,NULL,
+City,varchar(50),YES,,NULL,
+State,varchar(50),YES,,NULL,
+Zip,varchar(10),YES,,NULL,
+PhoneNumber,varchar(20),YES,,NULL,
+Email,varchar(100),YES,,NULL,
+AddressBookName,varchar(100),NO,,DefaultBook,
+ContactType,varchar(30),NO,,Friends,

@@ -55,3 +55,19 @@ SELECT State, COUNT(*) AS CountByState
 FROM AddressBook
 GROUP BY State
 ORDER BY State;
+
+-- UC7: Retrieve entries sorted alphabetically by person's name for a given city
+SELECT *
+FROM AddressBook
+WHERE City = 'Mumbai'
+ORDER BY FirstName ASC, LastName ASC;
+
+-- UC8: Proof that AddressBookName and ContactType exist and data is stored
+DESCRIBE AddressBook;
+
+SELECT AddressBookName, ContactType, COUNT(*) AS CountPerType
+FROM AddressBook
+GROUP BY AddressBookName, ContactType
+ORDER BY AddressBookName, ContactType;
+
+SELECT * FROM AddressBook;

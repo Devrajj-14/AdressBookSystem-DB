@@ -13,3 +13,8 @@ CREATE TABLE AddressBook (
     PhoneNumber VARCHAR(20),
     Email     VARCHAR(100)
 );
+
+-- UC8: Add AddressBookName and ContactType (Family/Friends/Profession etc.)
+ALTER TABLE AddressBook
+ADD COLUMN AddressBookName VARCHAR(100) NOT NULL DEFAULT 'DefaultBook',
+ADD COLUMN ContactType VARCHAR(30) NOT NULL DEFAULT 'Friends';
