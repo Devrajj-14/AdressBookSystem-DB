@@ -125,18 +125,26 @@ Rewrites key queries using JOINs so they work after normalization.
 ### 1) Create folders
 ```bash
 mkdir -p sql proof docs
+
+
 2) Initialize GitFlow
 git flow init
+
+
 3) Create files in sql/
 sql/99_reset_db.sql
 sql/01_uc1_schema.sql
 sql/02_uc2_insert_contacts.sql
 sql/03_uc_queries.sql
+
+
 UC1 — Create DB + Table
 Branch
 git checkout develop
 git pull
 git flow feature start UC1-CreateAddressBookTable
+
+
 Save file: sql/99_reset_db.sql
 DROP DATABASE IF EXISTS address_book_service;
 CREATE DATABASE address_book_service;
@@ -157,6 +165,8 @@ CREATE TABLE AddressBook (
     PhoneNumber VARCHAR(20),
     Email     VARCHAR(100)
 );
+
+
 Save file: sql/03_uc_queries.sql
 USE address_book_service;
 SELECT * FROM AddressBook;
@@ -169,6 +179,9 @@ git commit -m "[Devraj]: UC1 create AddressBook table with CSV proof"
 git push -u origin feature/UC1-CreateAddressBookTable
 git flow feature finish -k UC1-CreateAddressBookTable
 git push origin develop
+
+
+
 UC2 — Insert Contacts
 Branch
 git checkout develop
@@ -186,20 +199,27 @@ VALUES
 Update sql/03_uc_queries.sql
 USE address_book_service;
 SELECT * FROM AddressBook;
+
+
 Run order: reset → schema → inserts → queries
 Export CSV: proof/UC2_SelectAll.csv
+
 Commit + Push
 git add .
 git commit -m "[Devraj]: UC2 insert contacts with CSV proof"
 git push -u origin feature/UC2-InsertContacts
 git flow feature finish -k UC2-InsertContacts
 git push origin develop
+
+
+
 UC3 — Edit Contact by Name
 Branch
 git checkout develop
 git pull
 git flow feature start UC3-EditContactByName
 Update sql/03_uc_queries.sql (append)
+
 -- UC3: Edit Rahul Mehta
 UPDATE AddressBook
 SET PhoneNumber='7000000000', City='Delhi', State='DL', Zip='110001', Address='Connaught Place'
@@ -208,36 +228,49 @@ WHERE FirstName='Rahul' AND LastName='Mehta';
 SELECT * FROM AddressBook WHERE FirstName='Rahul' AND LastName='Mehta';
 SELECT * FROM AddressBook;
 Export CSV: proof/UC3_Update_Rahul.csv
+
 Commit:
 git add .
 git commit -m "[Devraj]: UC3 edit contact by name with CSV proof"
 git push -u origin feature/UC3-EditContactByName
 git flow feature finish -k UC3-EditContactByName
 git push origin develop
+
+
+
 UC4 — Delete Contact by Name
 Branch
 git checkout develop
 git pull
 git flow feature start UC4-DeleteContactByName
 Update sql/03_uc_queries.sql (append)
+
 -- UC4: Delete Neha Verma
 DELETE FROM AddressBook WHERE FirstName='Neha' AND LastName='Verma';
 SELECT * FROM AddressBook;
 Export CSV: proof/UC4_Delete_Neha.csv
+
 Commit:
 git add .
 git commit -m "[Devraj]: UC4 delete contact by name with CSV proof"
 git push -u origin feature/UC4-DeleteContactByName
 git flow feature finish -k UC4-DeleteContactByName
 git push origin develop
+
+
+
 UC5 — Retrieve by City or State
 Append:
 -- UC5
 SELECT * FROM AddressBook WHERE City='Mumbai';
 SELECT * FROM AddressBook WHERE State='MH';
+
 Proof:
 proof/UC5_By_City_Mumbai.csv
 proof/UC5_By_State_MH.csv
+
+
+
 UC6 — Count by City and State
 Append:
 -- UC6
@@ -246,6 +279,9 @@ SELECT State, COUNT(*) AS CountByState FROM AddressBook GROUP BY State ORDER BY 
 Proof:
 proof/UC6_Count_By_City.csv
 proof/UC6_Count_By_State.csv
+
+
+
 UC7 — Sort by Name for a City
 Append:
 -- UC7
@@ -253,6 +289,9 @@ SELECT * FROM AddressBook WHERE City='Mumbai'
 ORDER BY FirstName ASC, LastName ASC;
 Proof:
 proof/UC7_Sorted_Mumbai.csv
+
+
+
 UC8 — Add AddressBookName + ContactType
 Update sql/01_uc1_schema.sql (append)
 ALTER TABLE AddressBook
@@ -262,6 +301,9 @@ Update inserts (sql/02_uc2_insert_contacts.sql) to include new columns.
 Proof:
 proof/UC8_DescribeTable.csv
 proof/UC8_Count_By_Type.csv
+
+
+
 UC9 — Count by ContactType
 Append:
 -- UC9
@@ -270,11 +312,19 @@ FROM AddressBook
 GROUP BY ContactType
 ORDER BY ContactType;
 Proof:
+
 proof/UC9_Count_By_Type.csv
+
+
+
 UC10 — Add Same Person to Friends & Family
 Append inserts (same person twice with different ContactType).
 Proof:
 proof/UC10_Karan_Friends_Family.csv
+
+
+
+
 UC11 — Normalized Schema (New Structure)
 Replace schema + inserts to use:
 Contact
@@ -285,10 +335,17 @@ AddressBookContact
 Proof:
 proof/UC11_Full_View.csv
 proof/UC11_Karan_Types.csv
+
+
+
+
 UC12 — ER Diagram
 Upload:
 docs/UC12_ERD.png
 docs/UC12_ERD_Notes.md
+
+
+
 UC13 — Queries on New Structure
 Rewrite UC6/7/8/10 using JOINs.
 Proof:
