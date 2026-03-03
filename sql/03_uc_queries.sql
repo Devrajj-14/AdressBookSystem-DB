@@ -84,3 +84,14 @@ SELECT AddressBookName, ContactType, COUNT(*) AS PeopleCount
 FROM AddressBook
 GROUP BY AddressBookName, ContactType
 ORDER BY AddressBookName, ContactType;
+
+-- UC10: Proof that a person can belong to both Friends and Family (using two rows)
+SELECT *
+FROM AddressBook
+WHERE FirstName = 'Karan' AND LastName = 'Patel';
+
+-- (Optional) Count how many types Karan belongs to
+SELECT FirstName, LastName, Email, COUNT(DISTINCT ContactType) AS TypeCount
+FROM AddressBook
+WHERE FirstName = 'Karan' AND LastName = 'Patel'
+GROUP BY FirstName, LastName, Email;
