@@ -71,3 +71,16 @@ GROUP BY AddressBookName, ContactType
 ORDER BY AddressBookName, ContactType;
 
 SELECT * FROM AddressBook;
+
+
+-- UC9: Count contacts by type
+SELECT ContactType, COUNT(*) AS PeopleCount
+FROM AddressBook
+GROUP BY ContactType
+ORDER BY ContactType;
+
+-- (Optional) Count by AddressBookName + Type
+SELECT AddressBookName, ContactType, COUNT(*) AS PeopleCount
+FROM AddressBook
+GROUP BY AddressBookName, ContactType
+ORDER BY AddressBookName, ContactType;
