@@ -1,5 +1,9 @@
 USE address_book_service;
 
+-- UC2: View inserted contacts
+SELECT * FROM AddressBook;
+
+
 -- UC3: Edit existing contact by name (FirstName + LastName)
 -- Update Rahul Mehta's phone number and city
 UPDATE AddressBook
