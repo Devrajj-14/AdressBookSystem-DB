@@ -33,3 +33,25 @@ WHERE FirstName = 'Neha' AND LastName = 'Verma';
 
 -- Proof: show all contacts after deletion
 SELECT * FROM AddressBook;
+
+-- UC5: Retrieve person belonging to a City
+SELECT *
+FROM AddressBook
+WHERE City = 'Mumbai';
+
+-- UC5: Retrieve person belonging to a State
+SELECT *
+FROM AddressBook
+WHERE State = 'MH';
+
+-- UC6: Size of Address Book by City (count)
+SELECT City, COUNT(*) AS CountByCity
+FROM AddressBook
+GROUP BY City
+ORDER BY City;
+
+-- UC6: Size of Address Book by State (count)
+SELECT State, COUNT(*) AS CountByState
+FROM AddressBook
+GROUP BY State
+ORDER BY State;
