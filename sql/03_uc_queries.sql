@@ -1,97 +1,24 @@
 USE address_book_service;
 
--- UC2: View inserted contacts
-SELECT * FROM AddressBook;
+-- UC11 Proof: Show full view (contact + address + book + type)
+SELECT
+  b.AddressBookName,
+  t.TypeName,
+  c.FirstName, c.LastName, c.PhoneNumber, c.Email,
+  a.Address, a.City, a.State, a.Zip
+FROM AddressBookContact abc
+JOIN AddressBook b   ON b.BookId = abc.BookId
+JOIN Contact c       ON c.ContactId = abc.ContactId
+JOIN ContactType t   ON t.TypeId = abc.TypeId
+LEFT JOIN ContactAddress a ON a.ContactId = c.ContactId
+ORDER BY b.AddressBookName, t.TypeName, c.FirstName, c.LastName;
 
-
--- UC3: Edit existing contact by name (FirstName + LastName)
--- Update Rahul Mehta's phone number and city
-UPDATE AddressBook
-SET PhoneNumber = '7000000000',
-    City = 'Delhi',
-    Address = 'Connaught Place',
-    State = 'DL',
-    Zip = '110001'
-WHERE FirstName = 'Rahul' AND LastName = 'Mehta';
-
--- Proof: Show only the updated person
-SELECT * 
-FROM AddressBook
-WHERE FirstName = 'Rahul' AND LastName = 'Mehta';
-
--- Proof: Show all contacts (to see the change in the table)
-SELECT * FROM AddressBook;
-
--- UC4: Delete a person using person's name
-DELETE FROM AddressBook
-WHERE FirstName = 'Neha' AND LastName = 'Verma';
-
--- Proof: verify Neha is deleted
-SELECT *
-FROM AddressBook
-WHERE FirstName = 'Neha' AND LastName = 'Verma';
-
--- Proof: show all contacts after deletion
-SELECT * FROM AddressBook;
-
--- UC5: Retrieve person belonging to a City
-SELECT *
-FROM AddressBook
-WHERE City = 'Mumbai';
-
--- UC5: Retrieve person belonging to a State
-SELECT *
-FROM AddressBook
-WHERE State = 'MH';
-
--- UC6: Size of Address Book by City (count)
-SELECT City, COUNT(*) AS CountByCity
-FROM AddressBook
-GROUP BY City
-ORDER BY City;
-
--- UC6: Size of Address Book by State (count)
-SELECT State, COUNT(*) AS CountByState
-FROM AddressBook
-GROUP BY State
-ORDER BY State;
-
--- UC7: Retrieve entries sorted alphabetically by person's name for a given city
-SELECT *
-FROM AddressBook
-WHERE City = 'Mumbai'
-ORDER BY FirstName ASC, LastName ASC;
-
--- UC8: Proof that AddressBookName and ContactType exist and data is stored
-DESCRIBE AddressBook;
-
-SELECT AddressBookName, ContactType, COUNT(*) AS CountPerType
-FROM AddressBook
-GROUP BY AddressBookName, ContactType
-ORDER BY AddressBookName, ContactType;
-
-SELECT * FROM AddressBook;
-
-
--- UC9: Count contacts by type
-SELECT ContactType, COUNT(*) AS PeopleCount
-FROM AddressBook
-GROUP BY ContactType
-ORDER BY ContactType;
-
--- (Optional) Count by AddressBookName + Type
-SELECT AddressBookName, ContactType, COUNT(*) AS PeopleCount
-FROM AddressBook
-GROUP BY AddressBookName, ContactType
-ORDER BY AddressBookName, ContactType;
-
--- UC10: Proof that a person can belong to both Friends and Family (using two rows)
-SELECT *
-FROM AddressBook
-WHERE FirstName = 'Karan' AND LastName = 'Patel';
-
--- (Optional) Count how many types Karan belongs to
-SELECT FirstName, LastName, Email, COUNT(DISTINCT ContactType) AS TypeCount
-FROM AddressBook
-WHERE FirstName = 'Karan' AND LastName = 'Patel'
-GROUP BY FirstName, LastName, Email;
+-- UC11 Proof: Karan belongs to both Friends and Family
+SELECT
+  c.FirstName, c.LastName, c.Email,
+  GROUP_CONCAT(t.TypeName ORDER BY t.TypeName) AS Types
+FROM AddressBookContact abc
+JOIN Contact c     ON c.ContactId = abc.ContactId
+JOIN ContactType t ON t.TypeId = abc.TypeId
+WHERE c.Email = 'karan@gmail.com'
+GROUP BY c.ContactId;
